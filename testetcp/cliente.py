@@ -7,7 +7,8 @@ UDP_PORT = 8004
 def registrar_nickname(nickname):
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
         s.sendto(nickname.encode('utf-8'), (HOST, UDP_PORT))
-        print(f"Nickname '{nickname}' registrado com o servidor UDP.")
+        mensagem, _ = s.recvfrom(1024)
+        print(mensagem.decode('utf-8'))
 
 def run_client():
     nickname = input("Digite seu nickname: ")

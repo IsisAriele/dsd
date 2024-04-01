@@ -34,6 +34,7 @@ def udp_server():
             nickname = dados.decode('utf-8')
             print(f"Nickname {nickname} registrado de {endereco}")
             HIGHSCORES[nickname] = 0
+            servidor_udp.sendto(f"Nickname {nickname} registrado com sucesso!".encode('utf-8'), endereco)
 
 # Servidor TCP
 def tcp_server():
