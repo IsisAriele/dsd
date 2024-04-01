@@ -8,16 +8,16 @@ def remover_acentos(txt):
 # Lista de questões e respostas
 QUESTOES = [
     ("Qual a capital da França?", "Paris"),
+    ("Qual o primeiro de quem escreveu 'Dom Casmurro'?", "Machado"),
     ("Qual o maior planeta do sistema solar?", "Júpiter"),
     ("Qual é o rio mais longo do mundo?", "Amazonas"),
-    ("Quem escreveu 'Dom Casmurro'?", "Machado de Assis"),
     ("Qual o símbolo químico do Oxigênio?", "O"),
-    ("Quem pintou a 'Mona Lisa'?", "Da Vinci"),
+    ("Qual o primeiro nome de quem pintou a 'Mona Lisa'?", "Leonardo"),
     ("Em que ano o homem pisou na Lua pela primeira vez?", "1969"),
     ("Qual é o maior país do mundo?", "Rússia"),
-    ("Quem é conhecido como o pai da relatividade?", "Einstein"),
+    ("Qual é o segundo nome do pai da relatividade?", "Einstein"),
     ("Qual é a capital do Egito?", "Cairo"),
-    ("Qual processo as plantas usam para converter luz em energia?", "Fotosíntese"),
+    ("Qual processo as plantas usam para converter luz em energia?", "Fotossíntese"),
     ("Qual o maior mamífero terrestre?", "Elefante")
 ]
 
