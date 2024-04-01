@@ -1,5 +1,9 @@
 import socket
 import threading
+import unicodedata
+
+def remover_acentos(txt):
+    return ''.join((c for c in unicodedata.normalize('NFD', txt) if unicodedata.category(c) != 'Mn')).lower()
 
 # Lista de questões e respostas
 QUESTOES = [
@@ -61,7 +65,7 @@ def questionario(client_socket, client_address):
         for pergunta, resposta in QUESTOES:
             client_socket.send(pergunta.encode("utf-8"))
             resposta_do_cliente = client_socket.recv(1024).decode("utf-8")
-            if resposta_do_cliente.lower() == resposta.lower():
+            if resposta_do_cliente.lower() == remover_acentos(resposta.lower()):
                 respostas_corretas += 1
 
         salvar_pontuacao(nickname, respostas_corretas)
