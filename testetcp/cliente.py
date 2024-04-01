@@ -1,8 +1,8 @@
 import socket
 
 HOST = 'localhost'
-TCP_PORT = 8003
-UDP_PORT = 8004
+TCP_PORT = 8007
+UDP_PORT = 8008
 
 def registrar_nickname(nickname):
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:

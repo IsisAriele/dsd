@@ -23,8 +23,8 @@ QUESTOES = [
 
 # Configuração do servidor
 HOST = "localhost"
-TCP_PORT = 8003
-UDP_PORT = 8004
+TCP_PORT = 8007
+UDP_PORT = 8008
 HIGHSCORES = {}
 
 # Servidor UDP
@@ -56,7 +56,6 @@ def questionario(client_socket, client_address):
     try:
         identificador_do_cliente = f"{client_address[0]}:{client_address[1]}"
         print(f"Nova conexão de {identificador_do_cliente}")
-        print(f"Pontuações: {HIGHSCORES}")
 
         client_socket.send("Informe um nickname: ".encode("utf-8"))
         nickname = client_socket.recv(1024).decode("utf-8")
@@ -68,9 +67,11 @@ def questionario(client_socket, client_address):
             if resposta_do_cliente.lower() == remover_acentos(resposta.lower()):
                 respostas_corretas += 1
 
+        
         salvar_pontuacao(nickname, respostas_corretas)
         client_socket.send(f"Pontuação final: {respostas_corretas}".encode("utf-8"))
         print(f"Finalizando conexão com {identificador_do_cliente}...")
+        print(f"Pontuações: {HIGHSCORES}")
     finally:
         client_socket.close()
 
