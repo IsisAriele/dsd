@@ -1,22 +1,36 @@
 import socket
 
+HOST = 'localhost'
+TCP_PORT = 8003
+UDP_PORT = 8004
+
+def registrar_nickname(nickname):
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+        s.sendto(nickname.encode('utf-8'), (HOST, UDP_PORT))
+        print(f"Nickname '{nickname}' registrado com o servidor UDP.")
 
 def run_client():
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    nickname = input("Digite seu nickname: ")
+    registrar_nickname(nickname)
 
-    HOST = "localhost"
-    PORT = 8003
-    client.connect((HOST, PORT))
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((HOST, TCP_PORT))
 
-    while True:
-        mensagem_do_servidor = client.recv(1024)
-        mensagem_do_servidor = mensagem_do_servidor.decode("utf-8")
-        if "Pontuação final" in mensagem_do_servidor:
+        s.send(nickname.encode('utf-8'))
+
+        while True:
+            mensagem_do_servidor = s.recv(1024).decode('utf-8')
+
+            if "Informe um nickname: " in mensagem_do_servidor:
+                continue  # Já enviamos o nickname, então ignoramos esta mensagem
+
+            if "Pontuação final" in mensagem_do_servidor:
+                print(mensagem_do_servidor)
+                break
+
             print(mensagem_do_servidor)
-            break
+            resposta = input("Resposta: ")
+            s.send(resposta.encode('utf-8'))
 
-        print(mensagem_do_servidor)
-        msg = input("Resposta: ")
-        client.send(msg.encode("utf-8")[:1024])
-
-run_client()
+if __name__ == "__main__":
+    run_client()

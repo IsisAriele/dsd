@@ -1,67 +1,59 @@
 import socket
-import unicodedata
 
-def remover_acentos(txt):
-    return ''.join((c for c in unicodedata.normalize('NFD', txt) if unicodedata.category(c) != 'Mn')).lower()
+# Definindo a porta e o endereço IP
+HOST = "localhost"
+PORT = 5000
 
-def handle_client(conn, addr):
-    print(f"Conexão de: {addr}")
-    perguntas_respostas = [
-    ("Qual a capital da França?", "Paris"),
-    ("Qual o maior planeta do sistema solar?", "Júpiter"),
-    ("Qual é o rio mais longo do mundo?", "Amazonas"),
-    ("Quem escreveu 'Dom Casmurro'?", "Machado"),
-    ("Qual o símbolo químico do Oxigênio?", "O"),
-    ("Quem pintou a 'Mona Lisa'?", "DaVinci"),
-    ("Em que ano o homem pisou na Lua pela primeira vez?", "1969"),
-    ("Qual é o maior país do mundo?", "Rússia"),
-    ("Quem é conhecido como o pai da relatividade?", "Einstein"),
-    ("Qual é a capital do Egito?", "Cairo"),
-    ("Qual processo as plantas usam para converter luz em energia?", "Fotosíntese"),
-    ("Qual o maior mamífero terrestre?", "Elefante")
+# Criando o socket TCP
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Associando o socket ao endereço e porta
+server_socket.bind((HOST, PORT))
+
+# Abrindo o socket para escuta
+server_socket.listen()
+
+# Aceitando a conexão do cliente
+client_socket, client_address = server_socket.accept()
+
+# Perguntas e alternativas
+perguntas = [
+    "Qual é o maior país do mundo em extensão territorial?",
+    "Qual é a capital da Austrália?",
+    "Qual é o rio mais longo do mundo?",
+    "Qual é o maior oceano do mundo?",
+    "Qual é a fórmula química da água?",
 ]
 
-    try:
-        for pergunta, resposta_correta in perguntas_respostas:
-            acertou = False
-            while not acertou:
-                try:
-                    conn.sendall(pergunta.encode() + b'\n')
-                    resposta_cliente = conn.recv(1024).decode()
-                    resposta_cliente = remover_acentos(resposta_cliente).strip()
+alternativas = [
+    ["a) China", "b) Rússia", "c) Canadá", "d) Estados Unidos"],
+    ["a) Sydney", "b) Melbourne", "c) Canberra", "d) Brisbane"],
+    ["a) Nilo", "b) Amazonas", "c) Mississipi", "d) Yangtze"],
+    ["a) Pacífico", "b) Atlântico", "c) Índico", "d) Ártico"],
+    ["a) H2O", "b) CO2", "c) NaCl", "d) H2SO4"],
+]
 
-                    if resposta_cliente == remover_acentos(resposta_correta):
-                        msg = "Parabéns! Você acertou.\n"
-                        conn.sendall(msg.encode())
-                        acertou = True
-                    else:
-                        msg = "Incorreto. Tente novamente.\n"
-                        conn.sendall(msg.encode())
+# Enviando as perguntas e alternativas para o cliente
+for i in range(len(perguntas)):
+    client_socket.send(f"{perguntas[i]}\n".encode())
+    for j in range(len(alternativas[i])):
+        client_socket.send(f"{alternativas[i][j]}\n".encode())
 
-                except BrokenPipeError:
-                    print(f"A conexão com {addr} foi perdida.")
-                    return
-        conn.sendall("Fim do Quiz. Obrigado por participar!\n".encode())
-        
-    finally:
-        conn.close()
+# Recebendo as respostas do cliente
+respostas_cliente = []
+for i in range(len(perguntas)):
+    resposta_cliente = client_socket.recv(1024).decode()
+    respostas_cliente.append(resposta_cliente)
 
-def iniciar_servidor():
-    host = 'localhost'
-    porta = 12345
+# Calculando a pontuação
+pontuacao = 0
+for i in range(len(perguntas)):
+    if respostas_cliente[i] == "a":
+        pontuacao += 1
 
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as servidor_socket:
-        servidor_socket.bind((host, porta))
-        servidor_socket.listen(5)
-        print("Servidor aguardando conexões...")
+# Enviando a pontuação para o cliente
+client_socket.send(f"Sua pontuação foi: {pontuacao}".encode())
 
-        try:
-            while True:
-                conn, addr = servidor_socket.accept()
-                handle_client(conn, addr)
-
-        except KeyboardInterrupt:
-            print("\nServidor encerrando...")
-
-if __name__ == '__main__':
-    iniciar_servidor()
+# Fechando os sockets
+client_socket.close()
+server_socket.close()

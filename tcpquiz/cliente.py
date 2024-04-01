@@ -1,29 +1,32 @@
 import socket
 
-def conectar_servidor():
-    host = 'localhost'
-    porta = 12345
+# Definindo o endereço IP e a porta do servidor
+HOST = "localhost"
+PORT = 5000
 
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as cliente_socket:
-        cliente_socket.connect((host, porta))
+# Criando o socket TCP
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        try:
-            while True:
-                dados = cliente_socket.recv(1024).decode()
-                
-                if "Fim do Quiz" in dados:
-                    print(dados)
-                    break
+# Conectando ao servidor
+client_socket.connect((HOST, PORT))
 
-                print(dados, end='')
-                if "Parabéns!" in dados or "Incorreto." in dados:
-                    continue
+# Recebendo as perguntas e alternativas
+for i in range(5):
+    pergunta = client_socket.recv(1024).decode()
+    print(pergunta)
+    for j in range(4):
+        alternativa = client_socket.recv(1024).decode()
+        print(alternativa)
 
-                resposta = input()
-                cliente_socket.sendall(resposta.encode() + b'\n')
+    # Escolhendo a resposta
+    resposta = input("Digite sua resposta: ")
 
-        except Exception as e:
-            print("Ocorreu um erro:", e)
+    # Enviando a resposta para o servidor
+    client_socket.send(resposta.encode())
 
-if __name__ == '__main__':
-    conectar_servidor()
+# Recebendo a pontuação
+pontuacao = client_socket.recv(1024).decode()
+print(pontuacao)
+
+# Fechando o socket
+client_socket.close()
