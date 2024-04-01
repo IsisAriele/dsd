@@ -4,26 +4,26 @@ def conectar_servidor():
     host = 'localhost'
     porta = 12345
 
-    cliente_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    cliente_socket.connect((host, porta))
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as cliente_socket:
+        cliente_socket.connect((host, porta))
 
-    try:
-        while True:
-            dados = cliente_socket.recv(1024).decode()
-            print(dados)
-
-            if "Parabéns!" in dados or "Incorreto." in dados:
-                print(dados)
-                if "Parabéns!" in dados:
+        try:
+            while True:
+                dados = cliente_socket.recv(1024).decode()
+                
+                if "Fim do Quiz" in dados:
+                    print(dados)
                     break
-                else:
+
+                print(dados, end='')
+                if "Parabéns!" in dados or "Incorreto." in dados:
                     continue
 
-            resposta = input("Resposta: ")
-            cliente_socket.send(resposta.encode())
+                resposta = input()
+                cliente_socket.sendall(resposta.encode() + b'\n')
 
-    finally:
-        cliente_socket.close()
+        except Exception as e:
+            print("Ocorreu um erro:", e)
 
 if __name__ == '__main__':
     conectar_servidor()
