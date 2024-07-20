@@ -17,14 +17,14 @@ QUESTOES = [
 ]
 
 HOST = "localhost"
-PORT = 8003
+PORT = 8005
 
 HIGHSCORES = {}
 
 def run_server():
     servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     servidor.bind((HOST, PORT))
-    servidor.listen(0)
+    servidor.listen() 
 
     print(f"Aguardando conexões em {HOST}:{PORT}")
 

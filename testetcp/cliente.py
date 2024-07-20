@@ -5,7 +5,7 @@ def run_client():
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     HOST = "localhost"
-    PORT = 8003
+    PORT = 8005
     client.connect((HOST, PORT))
 
     while True:
