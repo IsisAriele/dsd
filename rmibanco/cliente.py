@@ -34,13 +34,19 @@ def main():
         elif opcao == '4':
             if username and password:
                 valor = float(input("Digite o valor para depositar: ").strip())
-                print(f"\n >>> {banco.depositar(username, password, valor)}")
+                if valor > 0:
+                    print(f"\n >>> {banco.depositar(username, password, valor)}")
+                else:
+                    print("\n Digite um valor positivo")
             else:
                 print("\n >>> Por favor, faça login primeiro.")
         elif opcao == '5':
             if username and password:
                 valor = float(input("Digite o valor para sacar: ").strip())
-                print(f"\n >>> {banco.sacar(username, password, valor)}")
+                if valor > 0:
+                    print(f"\n >>> {banco.sacar(username, password, valor)}")
+                else:
+                    print("\n Digite um valor positivo")
             else:
                 print("\n >>> Por favor, faça login primeiro.")
         elif opcao == '6':
