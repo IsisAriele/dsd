@@ -38,7 +38,7 @@ class BancoServer(object):
         return "Dados de autenticação incorretos."
 
 # Configuração do servidor Pyro
-daemon = Pyro4.Daemon()
-uri = daemon.register(BancoServer)
+daemon = Pyro4.Daemon() 
+uri = daemon.register(BancoServer) # Quando ele registra a classe, retorna uma uri
 print("Ready. Object uri =", uri)
 daemon.requestLoop()
