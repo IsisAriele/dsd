@@ -1,0 +1,11 @@
+akinator==1.1.1
+certifi==2024.7.4
+charset-normalizer==3.3.2
+idna==3.7
+lxml==5.2.2
+Pyro4==4.82
+pytz==2024.1
+requests==2.32.3
+serpent==1.41
+spyne==2.14.0
+urllib3==2.2.2

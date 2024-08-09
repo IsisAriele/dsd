@@ -175,3 +175,21 @@ pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python
 ./testetcp/servidor.py
+
+
+# Ignorar a pasta node_modules
+node_modules/
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar arquivos temporários do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Ignorar arquivos de ambiente (se houver)
+.env
+
+# Ignorar pastas de cache do editor de código (ex: VSCode)
+.vscode/
+.idea/
