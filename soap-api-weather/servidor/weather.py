@@ -1,6 +1,6 @@
 import requests
 
-api_key = "78d8fffee1a844b0a0e02642240908"
+api_key = ""
 base_url = "http://api.weatherapi.com/v1/current.json?"
 
 def get_weather(city_name):
