@@ -12,8 +12,13 @@ class WeatherService(ServiceBase):
         if previsao is None:
             return "Não foi possível encontrar cidade."
 
-        return f"{previsao['cidade']} - {previsao['regiao']}, {previsao['pais']} - Temperatura atual: {previsao['temperatura']}°C - Umidade: {previsao['umidade']}% (Hora atual: {previsao['hora_atual']})"
-
+        return (
+            f"{previsao['cidade']} - {previsao['regiao']}, {previsao['pais']}\n"
+            f"Temperatura atual: {previsao['temperatura']}°C\n"
+            f"Umidade: {previsao['umidade']}%\n"
+            f"Condição: {previsao['condicao']}\n"
+            f"Hora atual: {previsao['hora_atual']}"
+        )
 # O application define o serviço SOAP e gera automaticamente o WSDL
 # O servidor ESGI serve o aplicativo SOAP
 application = Application(

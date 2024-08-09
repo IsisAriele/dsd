@@ -22,8 +22,8 @@ rl.question('Escreva o nome da cidade: ', function(cityName) {
                 rl.close();
                 return;
             }
-            console.log('Informações do tempo para ' + cityName + ':');
-            console.log(result);
+            console.log('Informações do clima para ' + cityName + ':');
+            console.log(result.get_weatherResult);
             rl.close(); 
         });
     });

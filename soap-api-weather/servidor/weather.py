@@ -17,4 +17,5 @@ def get_weather(city_name):
         "hora_atual": x["location"]["localtime"],
         "temperatura": x["current"]["temp_c"],
         "umidade": x["current"]["humidity"],
+        "condicao": x["current"]["condition"]["text"],
     }
