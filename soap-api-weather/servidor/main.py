@@ -4,6 +4,8 @@ from spyne.server.wsgi import WsgiApplication
 from weather import get_weather
 
 class WeatherService(ServiceBase):
+    # Decorator para definir o tipo de dado de entrada e saída
+    # Unicode = string
     @rpc(Unicode, _returns=Unicode)
     def get_weather(ctx, city_name):
         previsao = get_weather(city_name)
@@ -12,6 +14,8 @@ class WeatherService(ServiceBase):
 
         return f"{previsao['cidade']} - {previsao['regiao']}, {previsao['pais']} - Temperatura atual: {previsao['temperatura']}°C - Umidade: {previsao['umidade']}% (Hora atual: {previsao['hora_atual']})"
 
+# O application define o serviço SOAP e gera automaticamente o WSDL
+# O servidor ESGI serve o aplicativo SOAP
 application = Application(
     [WeatherService],
     tns='spyne.examples.hello',
@@ -19,15 +23,19 @@ application = Application(
     out_protocol=Soap11()
 )
 
+# O servidor WSGI serve o aplicativo SOAP
 wsgi_application = WsgiApplication(application)
 
 if __name__ == '__main__':
     import logging
+    # Importa o servidor WSGI
     from wsgiref.simple_server import make_server
 
+    # Configuração do log
     logging.basicConfig(level=logging.INFO)
     logging.info("listening to http://127.0.0.1:8000")
     logging.info("wsdl is at: http://127.0.0.1:8000/?wsdl")
 
-    server = make_server('127.0.0.1', 8000, wsgi_application)
+    # Inicializa o servidor
+    server = make_server('172.21.32.1', 8000, wsgi_application)
     server.serve_forever()

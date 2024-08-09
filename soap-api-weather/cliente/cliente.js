@@ -1,7 +1,7 @@
 const soap = require('soap');
 const readline = require('readline');
 
-const url = 'http://127.0.0.1:8000/?wsdl';
+const url = 'http://172.21.32.1:8000/?wsdl';
 
 const rl = readline.createInterface({
     input: process.stdin,
